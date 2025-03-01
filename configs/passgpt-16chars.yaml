@@ -3,7 +3,7 @@ config_args:
     seed: 14
     maxchars: 10 # Maximum characters to be considered in your passwords
     subsample: -1 # -1 means no subsampling training data
-    tokenizer_path: 'byte_bpe_tokenizer_69' # Introdue the path or huggingface name for your tokenizer
+    tokenizer_path: 'byte_bpe_tokenizer_88' # Introdue the path or huggingface name for your tokenizer
     train_data_path: 'training_data.txt' # Path to your training data
 
 # Details for model architecture. Set parameters directly for GPT2Config (https://huggingface.co/docs/transformers/model_doc/gpt2#transformers.GPT2Config)
