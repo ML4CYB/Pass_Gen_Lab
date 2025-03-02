@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("--seed_offset", help="Random seed offset for generation. Allows to parallelize generation across different executions.", type=int, default=0)
     parser.add_argument("--num_generate", help="Number of passwords to generate", type=int, default=int(1e7))
     parser.add_argument("--batch_size", help="Batch size for generation", type=int, default=1000)
-    parser.add_argument("--device", help="Device to run execution", type=str, default='cuda')
+    parser.add_argument("--device", help="Device to run execution", type=str, default='cpu')
     parser.add_argument("--num_beams", help="Number of beams for sampling", type=int, default=1)
     parser.add_argument("--top_p", help="Probability for nucleus sampling", type=int, default=100)
     parser.add_argument("--top_k", help="Sample only from k tokens with highes probability", type=int, default=None)
@@ -73,7 +73,12 @@ if __name__ == "__main__":
 
         with torch.no_grad():
             # Generate tokens sampling from the distribution of codebook indices
-            g = model.generate(torch.tensor([[tokenizer.bos_token_id]]).cuda(), do_sample=True, max_length=args.maxchars+2, pad_token_id=tokenizer.pad_token_id, bad_words_ids=[[tokenizer.bos_token_id]], num_return_sequences=args.batch_size, num_beams=args.num_beams, top_p=args.top_p/100, top_k=args.top_k, temperature=args.temperature)
+            
+            # Using GPU
+            # g = model.generate(torch.tensor([[tokenizer.bos_token_id]]).cuda(), do_sample=True, max_length=args.maxchars+2, pad_token_id=tokenizer.pad_token_id, bad_words_ids=[[tokenizer.bos_token_id]], num_return_sequences=args.batch_size, num_beams=args.num_beams, top_p=args.top_p/100, top_k=args.top_k, temperature=args.temperature)
+            
+            # Using CPU
+            g = model.generate(torch.tensor([[tokenizer.bos_token_id]]), do_sample=True, max_length=args.maxchars+2, pad_token_id=tokenizer.pad_token_id, bad_words_ids=[[tokenizer.bos_token_id]], num_return_sequences=args.batch_size, num_beams=args.num_beams, top_p=args.top_p/100, top_k=args.top_k, temperature=args.temperature)
 
             # Remove start of sentence token
             g = g[:, 1:]
